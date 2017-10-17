@@ -1,51 +1,29 @@
 # rfc232-demo-app
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This app serves as a small test bed for using [emberjs/rfcs#232](https://github.com/emberjs/rfcs/blob/master/text/0232-simplify-qunit-testing-api.md) in ember-cli apps.
 
-## Prerequisites
+Following these steps allows us to use the new API:
 
-You will need the following things properly installed on your computer.
+```
+ember new test-app
+cd test-app
+npm i --save-dev ember-cli-qunit@^4.1.0-beta.2
+```
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with NPM)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+Boom, now you can write pretty tests like this:
 
-## Installation
+```js
+import { module, test } from 'qunit';
+import { setupRenderingTest, render } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
 
-* `git clone <repository-url>` this repository
-* `cd rfc232-demo-app`
-* `npm install`
+module('component:pretty-color', function(hooks) {
+  setupRenderingTest(hooks);
 
-## Running / Development
+  test('it renders', async function(assert) {
+    await render(hbs`{{pretty-color}}`);
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
-
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+    assert.equal(this.element.textContent, '#FF69B4');
+  });
+});
+```
